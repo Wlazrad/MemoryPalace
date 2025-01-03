@@ -1,0 +1,71 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Siatka 50x50 -->
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:columnCount="50"
+        android:visibility="visible" />
+
+    <!-- Szczegóły wybranego kwadratu -->
+    <GridLayout
+        android:id="@+id/detailView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:columnCount="2"
+        android:visibility="gone">
+
+        <!-- Pola tekstowe dla szczegółów -->
+        <EditText
+            android:id="@+id/topLeftText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:hint="Top Left" />
+
+        <EditText
+            android:id="@+id/topRightText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:hint="Top Right" />
+
+        <EditText
+            android:id="@+id/bottomLeftText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:hint="Bottom Left" />
+
+        <EditText
+            android:id="@+id/bottomRightText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnSpan="1"
+            android:hint="Bottom Right" />
+
+        <EditText
+            android:id="@+id/centerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Center" />
+
+    </GridLayout>
+
+    <!-- Przycisk Wróć -->
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wróć"
+        android:visibility="gone" />
+
+</LinearLayout>
