@@ -5,71 +5,67 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.GridLayout
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var gridLayout: GridLayout
-    private lateinit var detailView: GridLayout
-    private lateinit var backButton: Button
-    private lateinit var topLeftText: EditText
-    private lateinit var topRightText: EditText
-    private lateinit var bottomLeftText: EditText
-    private lateinit var bottomRightText: EditText
-    private lateinit var centerText: EditText
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Inicjalizacja widoków
-        gridLayout = findViewById(R.id.gridLayout)
-        detailView = findViewById(R.id.detailView)
-        backButton = findViewById(R.id.backButton)
-        topLeftText = findViewById(R.id.topLeftText)
-        topRightText = findViewById(R.id.topRightText)
-        bottomLeftText = findViewById(R.id.bottomLeftText)
-        bottomRightText = findViewById(R.id.bottomRightText)
-        centerText = findViewById(R.id.centerText)
+        val gridLayout = findViewById<GridLayout>(R.id.gridLayout)
+        val detailsLayout = findViewById<View>(R.id.detailsLayout)
+        val backButton = findViewById<Button>(R.id.backButton)
+        val saveButton = findViewById<Button>(R.id.saveButton)
 
-        populateGrid()
-        setupBackButton()
-    }
+        val detailFields = mapOf(
+            "top" to findViewById<EditText>(R.id.topText),
+            "bottom" to findViewById<EditText>(R.id.bottomText),
+            "left" to findViewById<EditText>(R.id.leftText),
+            "right" to findViewById<EditText>(R.id.rightText),
+            "center" to findViewById<EditText>(R.id.centerText)
+        )
 
-    private fun populateGrid() {
-        // Dynamiczne generowanie siatki 50x50
+        var selectedButton: Button? = null
+
+        gridLayout.visibility = View.VISIBLE
+        detailsLayout.visibility = View.GONE
+
         for (i in 0 until 50 * 50) {
-            val square = TextView(this).apply {
-                layoutParams = GridLayout.LayoutParams().apply {
-                    width = 40
-                    height = 40
-                    marginEnd = 1
-                    bottomMargin = 1
-                }
+            val button = Button(this).apply {
                 text = ""
-                setBackgroundColor(0xFFCCCCCC.toInt())
-                tag = i
                 setOnClickListener {
-                    showDetailView(tag.toString())
+                    gridLayout.visibility = View.GONE
+                    detailsLayout.visibility = View.VISIBLE
+                    selectedButton = this
+
+                    detailFields.forEach { (position, field) ->
+                        field.setText(tag?.toString()?.split(",")?.getOrNull(when (position) {
+                            "top" -> 0
+                            "bottom" -> 1
+                            "left" -> 2
+                            "right" -> 3
+                            "center" -> 4
+                            else -> -1
+                        }) ?: "")
+                    }
                 }
             }
-            gridLayout.addView(square)
+            gridLayout.addView(button)
         }
-    }
 
-    private fun showDetailView(tag: String) {
-        gridLayout.visibility = View.GONE
-        detailView.visibility = View.VISIBLE
+        saveButton.setOnClickListener {
+            selectedButton?.apply {
+                val data = detailFields.values.joinToString(",") { it.text.toString() }
+                tag = data
+                Toast.makeText(this@MainActivity, "Saved!", Toast.LENGTH_SHORT).show()
+            }
+        }
 
-        // Możesz zapisywać i odczytywać dane dla każdego kwadratu tutaj.
-        // Na przykład: przypisz `tag` do pól tekstowych, jeśli potrzebujesz unikalnych danych.
-    }
-
-    private fun setupBackButton() {
         backButton.setOnClickListener {
-            detailView.visibility = View.GONE
             gridLayout.visibility = View.VISIBLE
+            detailsLayout.visibility = View.GONE
         }
     }
 }
+

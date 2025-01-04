@@ -1,71 +1,74 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- activity_main.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <!-- Siatka 50x50 -->
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:columnCount="50"
-        android:visibility="visible" />
+        android:rowCount="50" />
 
-    <!-- Szczegóły wybranego kwadratu -->
-    <GridLayout
-        android:id="@+id/detailView"
+    <LinearLayout
+        android:id="@+id/detailsLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:columnCount="2"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <!-- Pola tekstowe dla szczegółów -->
         <EditText
-            android:id="@+id/topLeftText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:hint="Top Left" />
-
-        <EditText
-            android:id="@+id/topRightText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:hint="Top Right" />
-
-        <EditText
-            android:id="@+id/bottomLeftText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:hint="Bottom Left" />
-
-        <EditText
-            android:id="@+id/bottomRightText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnSpan="1"
-            android:hint="Bottom Right" />
-
-        <EditText
-            android:id="@+id/centerText"
+            android:id="@+id/topText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Center" />
+            android:hint="Top" />
 
-    </GridLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <!-- Przycisk Wróć -->
-    <Button
-        android:id="@+id/backButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Wróć"
-        android:visibility="gone" />
+            <EditText
+                android:id="@+id/leftText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Left" />
 
+            <EditText
+                android:id="@+id/centerText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Center" />
+
+            <EditText
+                android:id="@+id/rightText"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Right" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/bottomText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Bottom" />
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+    </LinearLayout>
 </LinearLayout>
