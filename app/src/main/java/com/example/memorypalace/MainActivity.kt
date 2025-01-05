@@ -1,5 +1,6 @@
 package com.example.memorypalace
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until 50 * 50) {
             val button = Button(this).apply {
                 text = ""
+                setBackgroundColor(Color.LTGRAY)
                 setOnClickListener {
                     gridLayout.visibility = View.GONE
                     detailsLayout.visibility = View.VISIBLE
@@ -58,6 +60,16 @@ class MainActivity : AppCompatActivity() {
             selectedButton?.apply {
                 val data = detailFields.values.joinToString(",") { it.text.toString() }
                 tag = data
+
+                val filledFields = detailFields.values.count { it.text.isNotEmpty() }
+                when (filledFields) {
+                    in 1..4 -> setBackgroundColor(Color.RED)
+                    5 -> setBackgroundColor(Color.YELLOW)
+                    else -> if (detailFields.values.all { it.text.isNotEmpty() }) {
+                        setBackgroundColor(Color.GREEN)
+                    }
+                }
+
                 Toast.makeText(this@MainActivity, "Saved!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -68,4 +80,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
