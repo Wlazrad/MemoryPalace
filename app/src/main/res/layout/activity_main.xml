@@ -1,4 +1,3 @@
-<!-- activity_main.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,7 +12,7 @@
         android:rowCount="50"
         android:useDefaultMargins="true"
         android:padding="4dp"
-        android:background="#CCCCCC"/>
+        android:background="#CCCCCC" />
 
     <LinearLayout
         android:id="@+id/detailsLayout"
@@ -67,6 +66,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/leftButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="←" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/upButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="↑" />
+
+                <Button
+                    android:id="@+id/downButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="↓" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/rightButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="→" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/backButton"

@@ -2,7 +2,6 @@ package com.example.memorypalace
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.Button
@@ -16,24 +15,34 @@ class MainActivity : AppCompatActivity() {
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var scaleFactor = 1.0f
 
+    private var currentRow = 0
+    private var currentColumn = 0
+    private lateinit var gridLayout: GridLayout
+
+    private lateinit var detailsLayout: View
+    private lateinit var detailFields: Map<String, EditText>
+    private var selectedButton: Button? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val gridLayout = findViewById<GridLayout>(R.id.gridLayout)
-        val detailsLayout = findViewById<View>(R.id.detailsLayout)
+        gridLayout = findViewById(R.id.gridLayout)
+        detailsLayout = findViewById(R.id.detailsLayout)
         val backButton = findViewById<Button>(R.id.backButton)
         val saveButton = findViewById<Button>(R.id.saveButton)
+        val upButton = findViewById<Button>(R.id.upButton)
+        val downButton = findViewById<Button>(R.id.downButton)
+        val leftButton = findViewById<Button>(R.id.leftButton)
+        val rightButton = findViewById<Button>(R.id.rightButton)
 
-        val detailFields = mapOf(
-            "top" to findViewById<EditText>(R.id.topText),
-            "bottom" to findViewById<EditText>(R.id.bottomText),
-            "left" to findViewById<EditText>(R.id.leftText),
-            "right" to findViewById<EditText>(R.id.rightText),
-            "center" to findViewById<EditText>(R.id.centerText)
+        detailFields = mapOf(
+            "top" to findViewById(R.id.topText),
+            "bottom" to findViewById(R.id.bottomText),
+            "left" to findViewById(R.id.leftText),
+            "right" to findViewById(R.id.rightText),
+            "center" to findViewById(R.id.centerText)
         )
-
-        var selectedButton: Button? = null
 
         gridLayout.visibility = View.VISIBLE
         detailsLayout.visibility = View.GONE
@@ -50,20 +59,9 @@ class MainActivity : AppCompatActivity() {
                         height = 100
                     }
                     setOnClickListener {
-                        gridLayout.visibility = View.GONE
-                        detailsLayout.visibility = View.VISIBLE
-                        selectedButton = this
-
-                        detailFields.forEach { (position, field) ->
-                            field.setText(tag?.toString()?.split(",")?.getOrNull(when (position) {
-                                "top" -> 0
-                                "bottom" -> 1
-                                "left" -> 2
-                                "right" -> 3
-                                "center" -> 4
-                                else -> -1
-                            }) ?: "")
-                        }
+                        currentRow = i / 50
+                        currentColumn = i % 50
+                        showDetailsLayout(this)
                     }
                 }
                 addView(button)
@@ -93,6 +91,34 @@ class MainActivity : AppCompatActivity() {
             detailsLayout.visibility = View.GONE
         }
 
+        upButton.setOnClickListener {
+            if (currentRow > 0) {
+                currentRow--
+                navigateTo(currentRow, currentColumn)
+            }
+        }
+
+        downButton.setOnClickListener {
+            if (currentRow < 49) {
+                currentRow++
+                navigateTo(currentRow, currentColumn)
+            }
+        }
+
+        leftButton.setOnClickListener {
+            if (currentColumn > 0) {
+                currentColumn--
+                navigateTo(currentRow, currentColumn)
+            }
+        }
+
+        rightButton.setOnClickListener {
+            if (currentColumn < 49) {
+                currentColumn++
+                navigateTo(currentRow, currentColumn)
+            }
+        }
+
         scaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
             override fun onScale(detector: ScaleGestureDetector): Boolean {
                 scaleFactor *= detector.scaleFactor
@@ -107,5 +133,28 @@ class MainActivity : AppCompatActivity() {
             scaleGestureDetector.onTouchEvent(event)
             true
         }
+    }
+
+    private fun showDetailsLayout(button: Button) {
+        gridLayout.visibility = View.GONE
+        detailsLayout.visibility = View.VISIBLE
+        selectedButton = button
+
+        detailFields.forEach { (position, field) ->
+            field.setText(button.tag?.toString()?.split(",")?.getOrNull(when (position) {
+                "top" -> 0
+                "bottom" -> 1
+                "left" -> 2
+                "right" -> 3
+                "center" -> 4
+                else -> -1
+            }) ?: "")
+        }
+    }
+
+    private fun navigateTo(row: Int, column: Int) {
+        val index = row * 50 + column
+        val button = gridLayout.getChildAt(index) as Button
+        showDetailsLayout(button)
     }
 }
