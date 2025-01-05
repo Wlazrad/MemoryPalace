@@ -2,6 +2,8 @@ package com.example.memorypalace
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -10,6 +12,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var scaleGestureDetector: ScaleGestureDetector
+    private var scaleFactor = 1.0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,28 +38,36 @@ class MainActivity : AppCompatActivity() {
         gridLayout.visibility = View.VISIBLE
         detailsLayout.visibility = View.GONE
 
-        for (i in 0 until 50 * 50) {
-            val button = Button(this).apply {
-                text = ""
-                setBackgroundColor(Color.LTGRAY)
-                setOnClickListener {
-                    gridLayout.visibility = View.GONE
-                    detailsLayout.visibility = View.VISIBLE
-                    selectedButton = this
+        gridLayout.apply {
+            columnCount = 50
+            rowCount = 50
+            for (i in 0 until 50 * 50) {
+                val button = Button(this@MainActivity).apply {
+                    text = ""
+                    setBackgroundColor(Color.LTGRAY)
+                    layoutParams = GridLayout.LayoutParams().apply {
+                        width = 100
+                        height = 100
+                    }
+                    setOnClickListener {
+                        gridLayout.visibility = View.GONE
+                        detailsLayout.visibility = View.VISIBLE
+                        selectedButton = this
 
-                    detailFields.forEach { (position, field) ->
-                        field.setText(tag?.toString()?.split(",")?.getOrNull(when (position) {
-                            "top" -> 0
-                            "bottom" -> 1
-                            "left" -> 2
-                            "right" -> 3
-                            "center" -> 4
-                            else -> -1
-                        }) ?: "")
+                        detailFields.forEach { (position, field) ->
+                            field.setText(tag?.toString()?.split(",")?.getOrNull(when (position) {
+                                "top" -> 0
+                                "bottom" -> 1
+                                "left" -> 2
+                                "right" -> 3
+                                "center" -> 4
+                                else -> -1
+                            }) ?: "")
+                        }
                     }
                 }
+                addView(button)
             }
-            gridLayout.addView(button)
         }
 
         saveButton.setOnClickListener {
@@ -77,6 +91,21 @@ class MainActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             gridLayout.visibility = View.VISIBLE
             detailsLayout.visibility = View.GONE
+        }
+
+        scaleGestureDetector = ScaleGestureDetector(this, object : ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            override fun onScale(detector: ScaleGestureDetector): Boolean {
+                scaleFactor *= detector.scaleFactor
+                scaleFactor = scaleFactor.coerceIn(0.5f, 3.0f)
+                gridLayout.scaleX = scaleFactor
+                gridLayout.scaleY = scaleFactor
+                return true
+            }
+        })
+
+        gridLayout.setOnTouchListener { _, event ->
+            scaleGestureDetector.onTouchEvent(event)
+            true
         }
     }
 }
