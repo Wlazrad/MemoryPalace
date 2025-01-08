@@ -39,9 +39,10 @@ class MainActivity : AppCompatActivity() {
         detailFields = mapOf(
             "top" to findViewById(R.id.topText),
             "bottom" to findViewById(R.id.bottomText),
-            "left" to findViewById(R.id.leftText),
-            "right" to findViewById(R.id.rightText),
-            "center" to findViewById(R.id.centerText)
+            "side1" to findViewById(R.id.side1Text),
+            "side2" to findViewById(R.id.side2Text),
+            "side3" to findViewById(R.id.side3Text),
+            "side4" to findViewById(R.id.side4Text)
         )
 
         gridLayout.visibility = View.VISIBLE
@@ -144,9 +145,10 @@ class MainActivity : AppCompatActivity() {
             field.setText(button.tag?.toString()?.split(",")?.getOrNull(when (position) {
                 "top" -> 0
                 "bottom" -> 1
-                "left" -> 2
-                "right" -> 3
-                "center" -> 4
+                "side1" -> 2
+                "side2" -> 3
+                "side3" -> 4
+                "side4" -> 5
                 else -> -1
             }) ?: "")
         }
