@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.memorypalace"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -49,7 +49,8 @@ android {
     }
 }
 dependencies {
-    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
