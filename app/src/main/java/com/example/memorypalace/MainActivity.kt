@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                         showDetailsLayout(this)
                     }
                 }
+                loadButtonData(button, "button_$i") // Wczytaj dane przycisku
                 addView(button)
             }
         }
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
 
+                saveButtonData(this, "button_${gridLayout.indexOfChild(this)}") // Zapisz dane przycisku
                 Toast.makeText(this@MainActivity, "Saved!", Toast.LENGTH_SHORT).show()
             }
         }
@@ -158,5 +160,26 @@ class MainActivity : AppCompatActivity() {
         val index = row * 50 + column
         val button = gridLayout.getChildAt(index) as Button
         showDetailsLayout(button)
+    }
+
+    private fun saveButtonData(button: Button, key: String) {
+        val sharedPreferences = getSharedPreferences("MemoryPalaceData", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString(key, button.tag?.toString() ?: "")
+        editor.apply()
+    }
+
+    private fun loadButtonData(button: Button, key: String) {
+        val sharedPreferences = getSharedPreferences("MemoryPalaceData", MODE_PRIVATE)
+        val data = sharedPreferences.getString(key, null)
+        if (data != null) {
+            button.tag = data
+            val filledFields = data.split(",").count { it.isNotEmpty() }
+            when (filledFields) {
+                in 1..4 -> button.setBackgroundColor(Color.RED)
+                5 -> button.setBackgroundColor(Color.YELLOW)
+                else -> button.setBackgroundColor(Color.GREEN)
+            }
+        }
     }
 }
